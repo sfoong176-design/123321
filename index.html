@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심플 투두리스트 & 문의</title>
+    
+    <style>
+        /* 기본 리셋 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Malgun Gothic', sans-serif;
+        }
+
+        body {
+            background-color: #121214;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 컨테이너 */
+        .todo-container {
+            background-color: #1e1e24;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        /* 입력창 구역 */
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #todo-input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2a2a32;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #todo-input:focus {
+            border: 1px solid #8257e5;
+        }
+
+        #add-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #8257e5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        #add-btn:hover {
+            background-color: #9466ff;
+        }
+
+        /* 리스트 구역 */
+        #todo-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: #2a2a32;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: #7c7c8a;
+        }
+
+        .todo-item span {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff5555;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            color: #ff8888;
+        }
+
+        /* 구분선 */
+        .divider {
+            border: 0;
+            height: 1px;
+            background: #2a2a32;
+            margin: 25px 0;
+        }
+
+        /* 전화 연결 구역 스타일 */
+        .contact-box {
+            text-align: center;
+        }
+
+        .contact-box p {
+            font-size: 14px;
+            color: #a1a1aa;
+            margin-bottom: 10px;
+        }
+
+        .call-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background-color: #059669;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .call-btn:hover {
+            background-color: #10b981;
+        }
+
+        .call-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h2>오늘의 할 일 🚀</h2>
+        
+        <div class="input-box">
+            <input type="text" id="todo-input" placeholder="할 일을 입력하세요..." maxlength="30">
+            <button id="add-btn">추가</button>
+        </div>
+
+        <ul id="todo-list">
+            </ul>
+
+        <hr class="divider">
+
+        <div class="contact-box">
+            <p>궁금한 점이 있으신가요?</p>
+            <a href="tel:010-5506-0040" class="call-btn">📞 010-5506-0040 전화하기</a>
+        </div>
+    </div>
+
+    <script>
+        const todoInput = document.getElementById('todo-input');
+        const addBtn = document.getElementById('add-btn');
+        const todoList = document.getElementById('todo-list');
+
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+
+            if (todoText === '') {
+                alert('할 일을 입력해주세요!');
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+
+            const span = document.createElement('span');
+            span.innerText = todoText;
+            
+            span.addEventListener('click', () => {
+                li.classList.toggle('completed');
+            });
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerText = '삭제';
+            
+            deleteBtn.addEventListener('click', () => {
+                li.remove();
+            });
+
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
+            todoList.appendChild(li);
+
+            todoInput.value = '';
+            todoInput.focus();
+        }
+
+        addBtn.addEventListener('click', addTodo);
+
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTodo();
+            }
+        });
+    </script>
+</body>
+</html>
